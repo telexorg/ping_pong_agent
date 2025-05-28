@@ -1,0 +1,15 @@
+.env
+.venv
+env/
+./env
+static
+api.log
+./logs
+__pycache__/
+*.pyc
+*.pyo
+scripts
+images/
+logs/
+venv/
+*/__pycache__/
