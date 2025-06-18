@@ -12,7 +12,8 @@ app = FastAPI()
 RAW_AGENT_CARD_DATA = {
   "name": "PingPongAgent",
   "description": "An agent that responds 'pong' to 'ping'.",
-  "url": "http://localhost:4000",
+  "url": "",
+  "documentationUrl": "",
   "provider": {
       "organization": "Telex Org.",
       "url": "https://telex.im"
@@ -52,11 +53,9 @@ def agent_card(request: Request):
     current_base_url = str(request.base_url).rstrip("/")
 
     response_agent_card = RAW_AGENT_CARD_DATA.copy()
-    # new_name = f"{response_agent_card['name']}{random.randint(1, 1000)}"
-    # print(new_name)
-    # response_agent_card["name"] = "PingPongAgent990"
     response_agent_card["url"] = current_base_url
     response_agent_card["provider"]["url"] = current_base_url
+    response_agent_card["provider"]["documentationUrl"] = f"{current_base_url}/docs"
 
     return response_agent_card
 
@@ -71,14 +70,6 @@ async def handle_task_send(message:str, request_id):
   parts = schemas.TextPart(type="text", text=text)
 
   message = schemas.Message(role="agent", parts=[parts])
-
-  # artifacts = schemas.Artifact(parts=[parts])
-
-  # task = schemas.Task(
-  #     id = task_id or uuid4().hex,
-  #     status =  schemas.TaskStatus(state=schemas.TaskState.COMPLETED),
-  #     artifacts = [artifacts]
-  # )
 
   response = schemas.SendResponse(
       id=request_id,
@@ -134,5 +125,4 @@ async def handle_task(request: Request):
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 10000))
     uvicorn.run("main:app", host="0.0.0.0", port=4000, reload=True)
