@@ -6,6 +6,11 @@ from uuid import uuid4
 from fastapi import FastAPI, Request, status, HTTPException
 from fastapi.responses import HTMLResponse
 from a2a.utils import new_agent_text_message
+from dotenv import load_dotenv
+
+load_dotenv()
+
+PORT = int(os.getenv("PORT", 4000))
 
 app = FastAPI()
 
@@ -125,4 +130,4 @@ async def handle_task(request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=4000, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=PORT, reload=True)
